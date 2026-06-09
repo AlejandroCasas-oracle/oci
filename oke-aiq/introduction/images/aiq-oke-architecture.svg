@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">AIQ on Oracle Kubernetes Engine architecture</title>
+  <desc id="desc">Learner browser traffic reaches an OCI public load balancer, then an OKE enhanced cluster running AIQ frontend, backend, PostgreSQL, and Kubernetes secrets on one A100 GPU worker node.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#047857"/>
+    </marker>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .vcn { fill: #fff7ed; stroke: #f97316; stroke-width: 2.5; }
+      .public { fill: #eff6ff; stroke: #60a5fa; stroke-width: 2; }
+      .private { fill: #ecfdf5; stroke: #34d399; stroke-width: 2; }
+      .api { fill: #f5f3ff; stroke: #8b5cf6; stroke-width: 2; }
+      .service { fill: #ffffff; stroke: #64748b; stroke-width: 2; }
+      .service-blue { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; }
+      .service-green { fill: #d1fae5; stroke: #047857; stroke-width: 2; }
+      .service-red { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; }
+      .secret { fill: #fef3c7; stroke: #d97706; stroke-width: 2; }
+      .gateway { fill: #f1f5f9; stroke: #64748b; stroke-width: 2; }
+      .title { font: 700 30px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .h2 { font: 700 18px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .h3 { font: 700 15px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .body { font: 400 14px Arial, Helvetica, sans-serif; fill: #334155; }
+      .small { font: 400 12px Arial, Helvetica, sans-serif; fill: #475569; }
+      .label { font: 700 12px Arial, Helvetica, sans-serif; fill: #1e40af; }
+      .label-green { font: 700 12px Arial, Helvetica, sans-serif; fill: #047857; }
+      .label-slate { font: 700 12px Arial, Helvetica, sans-serif; fill: #475569; }
+      .arrow-blue { fill: none; stroke: #2563eb; stroke-width: 3; marker-end: url(#arrow-blue); }
+      .arrow-green { fill: none; stroke: #047857; stroke-width: 3; marker-end: url(#arrow-green); }
+      .arrow-slate { fill: none; stroke: #475569; stroke-width: 2.5; marker-end: url(#arrow-slate); stroke-dasharray: 7 6; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="900"/>
+  <text class="title" x="48" y="50">Deploy NVIDIA AIQ Blueprint on OKE</text>
+  <text class="body" x="50" y="78">Runtime traffic, OCI network boundaries, GPU worker placement, and Kubernetes secrets.</text>
+
+  <g filter="url(#shadow)">
+    <rect class="panel" x="48" y="105" width="188" height="78" rx="8"/>
+    <text class="h2" x="74" y="137">Learner browser</text>
+    <text class="body" x="74" y="162">Workshop user</text>
+  </g>
+
+  <rect class="vcn" x="48" y="210" width="1104" height="670" rx="10"/>
+  <text class="h2" x="74" y="244">VCN: &lt;resource_prefix&gt;-vcn</text>
+  <text class="small" x="74" y="266">Three subnets separate public ingress, private GPU workers, and the Kubernetes API endpoint.</text>
+
+  <g filter="url(#shadow)">
+    <rect class="public" x="76" y="302" width="272" height="230" rx="8"/>
+    <text class="h2" x="102" y="335">LB subnet</text>
+    <text class="small" x="102" y="357">Public subnet for OCI Load Balancer frontend</text>
+
+    <rect class="gateway" x="105" y="385" width="218" height="54" rx="8"/>
+    <text class="h3" x="128" y="418">Internet Gateway</text>
+
+    <rect class="service-blue" x="105" y="462" width="218" height="72" rx="8"/>
+    <text class="h3" x="126" y="494">OCI public Load Balancer</text>
+    <text class="small" x="126" y="516">HTTP listener on port 80</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="private" x="386" y="302" width="518" height="470" rx="8"/>
+    <text class="h2" x="412" y="335">Worker subnet</text>
+    <text class="small" x="412" y="357">Private GPU node with NAT egress to NGC and public registries</text>
+
+    <rect class="service" x="416" y="390" width="458" height="306" rx="8"/>
+    <text class="h2" x="444" y="426">OKE Enhanced Cluster</text>
+    <text class="small" x="444" y="448">Namespace: ns-aiq</text>
+
+    <rect class="service-blue" x="444" y="474" width="160" height="74" rx="8"/>
+    <text class="h3" x="466" y="505">aiq-frontend</text>
+    <text class="small" x="466" y="527">Service port 3000</text>
+
+    <rect class="service-green" x="637" y="474" width="160" height="74" rx="8"/>
+    <text class="h3" x="660" y="505">aiq-backend</text>
+    <text class="small" x="660" y="527">Service port 8000</text>
+
+    <rect class="service-red" x="637" y="590" width="160" height="74" rx="8"/>
+    <text class="h3" x="662" y="621">aiq-postgres</text>
+    <text class="small" x="662" y="643">Service port 5432</text>
+
+    <rect class="secret" x="444" y="590" width="160" height="74" rx="8"/>
+    <text class="h3" x="486" y="621">Secrets</text>
+    <text class="small" x="464" y="643">ngc-secret</text>
+    <text class="small" x="464" y="660">aiq-credentials</text>
+
+    <rect class="gateway" x="416" y="718" width="240" height="56" rx="8"/>
+    <text class="h3" x="441" y="750">One OCI A100 GPU node</text>
+    <text class="small" x="441" y="768">1 TB boot volume</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="api" x="936" y="302" width="196" height="230" rx="8"/>
+    <text class="h2" x="962" y="335">API subnet</text>
+    <text class="small" x="962" y="357">Private, small CIDR</text>
+
+    <rect class="service" x="966" y="405" width="132" height="84" rx="8"/>
+    <text class="h3" x="989" y="439">Kubernetes</text>
+    <text class="h3" x="997" y="462">API endpoint</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="gateway" x="76" y="602" width="168" height="68" rx="8"/>
+    <text class="h3" x="114" y="632">NAT Gateway</text>
+    <text class="small" x="111" y="654">Worker egress</text>
+
+    <rect class="gateway" x="76" y="700" width="168" height="68" rx="8"/>
+    <text class="h3" x="97" y="730">Service Gateway</text>
+    <text class="small" x="106" y="752">OCI service access</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="panel" x="1180" y="602" width="200" height="68" rx="8"/>
+    <text class="h3" x="1221" y="632">NVIDIA NGC</text>
+    <text class="small" x="1216" y="654">nvcr.io image pulls</text>
+
+    <rect class="panel" x="1180" y="700" width="200" height="68" rx="8"/>
+    <text class="h3" x="1216" y="730">Public registries</text>
+    <text class="small" x="1230" y="752">Container images</text>
+  </g>
+
+  <path class="arrow-blue" d="M 142 184 L 142 198 L 24 198 L 24 412 L 105 412"/>
+  <text class="label" x="50" y="398">HTTP 80</text>
+
+  <path class="arrow-blue" d="M 214 440 L 214 462"/>
+  <path class="arrow-blue" d="M 323 498 C 365 498 382 511 444 511"/>
+  <text class="label" x="336" y="487">frontend service, 3000</text>
+
+  <path class="arrow-green" d="M 604 511 L 637 511"/>
+  <text class="label-green" x="612" y="496">8000</text>
+
+  <path class="arrow-green" d="M 717 548 L 717 590"/>
+  <text class="label-green" x="728" y="575">5432</text>
+
+  <path class="arrow-slate" d="M 524 590 L 524 548"/>
+  <path class="arrow-slate" d="M 604 627 C 620 627 620 511 637 511"/>
+  <text class="label-slate" x="460" y="576">Kubernetes secrets stay in cluster</text>
+
+  <path class="arrow-slate" d="M 386 636 L 244 636"/>
+  <path class="arrow-slate" d="M 210 670 C 430 838 900 820 1180 636"/>
+  <path class="arrow-slate" d="M 210 670 C 430 874 900 878 1180 734"/>
+  <text class="label-slate" x="286" y="616">NAT egress to image registries</text>
+
+  <path class="arrow-slate" d="M 904 420 L 966 446"/>
+  <text class="label-slate" x="910" y="405">private API endpoint</text>
+</svg>
