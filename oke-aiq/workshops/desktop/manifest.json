@@ -1,0 +1,29 @@
+{
+    "workshoptitle": "Deploy the NVIDIA AI-Q and RAG Blueprints on Oracle Kubernetes Engine",
+    "help": "livelabs-help-db_us@oracle.com",
+    "tutorials": [
+        {
+            "title": "Introduction",
+            "description": "Review the workshop architecture, prerequisites, and learning objectives.",
+            "type": "livelabs",
+            "filename": "../../introduction/introduction.md"
+        },
+        {
+            "title": "Lab 1: Deploy the NVIDIA RAG Blueprint",
+            "description": "Deploy the RAG Blueprint, upload an OCI document, and validate cited answers.",
+            "type": "livelabs",
+            "filename": "../../deploy-rag-blueprint/deploy-rag-blueprint.md"
+        },
+        {
+            "title": "Lab 2: Deploy and Test the AI-Q Research Assistant",
+            "description": "Deploy AI-Q, load collections, and generate a Tavily-backed research report.",
+            "type": "livelabs",
+            "filename": "../../deploy-aiq-research-assistant/deploy-aiq-research-assistant.md"
+        },
+        {
+            "title": "Need Help?",
+            "description": "Template to link to Need Help lab at the end of workshop.",
+            "filename": "https://raw.githubusercontent.com/oracle-livelabs/common/main/labs/need-help/need-help-freetier.md"
+        }
+    ]
+}
